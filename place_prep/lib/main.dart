@@ -24,8 +24,8 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.yellow,
       appBar: AppBar(
-        title: const Text("Placement Prep Tracker"),
-      ),
+        title: const Text("Placement Prep Tracker  "),
+      ), 
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

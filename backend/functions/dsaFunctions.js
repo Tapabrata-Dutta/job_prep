@@ -1,3 +1,3 @@
  export const dsaFunction = (req, res) => {
-    const {id } = req.params
+    const {id_name } = req.params
 }
