@@ -6,7 +6,7 @@ export const dsaFunction = (req, res) => {
     if(!id_name){
         return  res.json({
             status: false,
-            message: "Fill the id name first"
+            message: "Fill the id name first not fiilled"
         })
     }
     const [rows] =  db.execute("SELECT *FROM ")
