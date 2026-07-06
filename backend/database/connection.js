@@ -22,6 +22,14 @@ if (hasDbConfig) {
             isSolve BOOLEAN NOT NULL DEFAULT FALSE
         )
     `)
+    await db.execute(`
+        CREATE TABLE IF NOT EXISTS applicationTable (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR (255) NOT NULL,
+        applied BOOLEAN NOT NULL DEFAULT FALSE, 
+        status VARCHAR (255) NOT NULL DEFAULT 'pending'
+        )
+    `)
 } else {
     console.warn("Database config missing. Falling back to in-memory DSA storage.")
 }
