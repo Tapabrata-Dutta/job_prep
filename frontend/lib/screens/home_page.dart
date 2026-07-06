@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:place_prep/screens/application_page.dart';
 import 'package:place_prep/screens/dsa_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -15,6 +16,17 @@ class HomePage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => const DsaPage()),
+          );
+        },
+      ),
+      _ModuleCard(
+        title: 'Applications',
+        subtitle: 'Track company applications and statuses',
+        icon: Icons.business,
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ApplicationPage()),
           );
         },
       ),

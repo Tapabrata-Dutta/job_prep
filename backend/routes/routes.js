@@ -1,6 +1,6 @@
 import express from "express"
 import { createDSA, deleteQuestion, getDSA, updateDSA } from "../functions/dsaFunctions.js"
-import { getApplications } from "../functions/applications.js"
+import { createApplication, deleteApplication, getApplications, updateApplication } from "../functions/applications.js"
 
 const router = express.Router()
 
@@ -16,5 +16,8 @@ router.delete("/api/dsa/:id", deleteQuestion)
 
 router.get("/api/applications", getApplications)
 router.get("/api/applications/:id", getApplications)
+router.post("/api/applications", createApplication)
+router.put("/api/applications/:id", updateApplication)
+router.delete("/api/applications/:id", deleteApplication)
 
 export default router

@@ -20,6 +20,8 @@ class _DsaPageState extends State<DsaPage> {
   bool _editSolved = false;
   int? _updatingItemId;
 
+  static const int _demoUserId = 1;
+
   String get _baseUrl {
     if (Platform.isAndroid) {
       return 'http://10.0.2.2:8000/api/dsa';
@@ -29,6 +31,13 @@ class _DsaPageState extends State<DsaPage> {
 
   String get _baseUrlWithSlash {
     return '$_baseUrl/';
+  }
+
+  Map<String, String> get _defaultHeaders {
+    return {
+      'Content-Type': 'application/json',
+      'X-User-Id': '$_demoUserId',
+    };
   }
 
   @override
@@ -61,7 +70,10 @@ class _DsaPageState extends State<DsaPage> {
     });
 
     try {
-      final response = await http.get(Uri.parse(_baseUrl)).timeout(const Duration(seconds: 8));
+      final response = await http.get(
+        Uri.parse(_baseUrl),
+        headers: _defaultHeaders,
+      ).timeout(const Duration(seconds: 8));
       if (!mounted) return;
 
       if (response.statusCode == 200) {
@@ -100,7 +112,7 @@ class _DsaPageState extends State<DsaPage> {
     try {
       final response = await http.post(
         Uri.parse(_baseUrl),
-        headers: {'Content-Type': 'application/json'},
+        headers: _defaultHeaders,
         body: jsonEncode({'question': question, 'isSolve': false}),
       ).timeout(const Duration(seconds: 8));
 
@@ -128,7 +140,7 @@ class _DsaPageState extends State<DsaPage> {
     try {
       final response = await http.put(
         Uri.parse('${_baseUrlWithSlash}${item.id}'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _defaultHeaders,
         body: jsonEncode({'question': question, 'isSolve': isSolved}),
       ).timeout(const Duration(seconds: 8));
 
@@ -164,7 +176,7 @@ class _DsaPageState extends State<DsaPage> {
     try {
       final response = await http.put(
         Uri.parse('${_baseUrlWithSlash}${item.id}'),
-        headers: {'Content-Type': 'application/json'},
+        headers: _defaultHeaders,
         body: jsonEncode({'isSolve': nextValue}),
       ).timeout(const Duration(seconds: 8));
 
@@ -194,7 +206,10 @@ class _DsaPageState extends State<DsaPage> {
 
   Future<void> _deleteQuestion(_DsaItem item) async {
     try {
-      final response = await http.delete(Uri.parse('${_baseUrlWithSlash}${item.id}')).timeout(const Duration(seconds: 8));
+      final response = await http.delete(
+        Uri.parse('${_baseUrlWithSlash}${item.id}'),
+        headers: _defaultHeaders,
+      ).timeout(const Duration(seconds: 8));
       if (!mounted) return;
       if (response.statusCode == 200) {
         await _loadQuestions();
