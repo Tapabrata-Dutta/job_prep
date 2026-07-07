@@ -29,7 +29,7 @@ const parseUserId = (req) => {
 const requireUserId = (req, res) => {
     const userId = parseUserId(req)
     if (!userId) {
-        res.status(401).json({status: false, message: "Missing authenticated user id. Provide X-User-Id header or userId."})
+        res.status(401).json({status: false, message: "Missing authenticated user id. Provide X-User-Id header or userId to go."})
     }
     return userId
 }
