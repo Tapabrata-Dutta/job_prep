@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:place_prep/screens/application_page.dart';
 import 'package:place_prep/screens/dsa_page.dart';
+import 'package:place_prep/services/auth_service.dart';
+import 'package:place_prep/screens/auth_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -48,6 +50,18 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Placement Prep'),
         centerTitle: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Logout',
+            onPressed: () {
+              AuthService.logout();
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => const AuthPage()),
+              );
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -56,7 +70,7 @@ class HomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Choose a module',
+                'Welcome, ${AuthService.userName ?? "User"}!',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),

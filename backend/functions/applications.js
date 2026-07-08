@@ -20,20 +20,6 @@ const normalizeRow = (row) => ({
     applied: normalization(row.applied)
 })
 
-const parseUserId = (req) => {
-    const rawUserId = req.header("x-user-id") ?? req.query.userId ?? req.body.userId
-    const id = Number(rawUserId)
-    return Number.isInteger(id) && id > 0 ? id : null
-}
-
-const requireUserId = (req, res) => {
-    const userId = parseUserId(req)
-    if (!userId) {
-        res.status(401).json({status: false, message: "Missing authenticated user id. Provide X-User-Id header or userId to go."})
-    }
-    return userId
-}
-
 const ensureSeedData = () => {
     if(companyNames.length === 0) {
         companyNames.push(
@@ -45,8 +31,7 @@ const ensureSeedData = () => {
 
 export const getApplications = async (req, res)=>{
     const {id} = req.params;
-    const userId = requireUserId(req, res)
-    if (!userId) return
+    const userId = req.userId
     
     try {
         if(!db) {
@@ -72,13 +57,12 @@ export const getApplications = async (req, res)=>{
         return res.status(200).json({status: true, data: rows.map(normalizeRow)});
     } catch (error) {
         return res.status(500).json({status: false, message: error.message});
-}
+    }
 }
 
 export const createApplication = async (req, res) => {
     const { name, applied, status } = req.body;
-    const userId = requireUserId(req, res);
-    if (!userId) return;
+    const userId = req.userId
 
     if (!name || typeof name !== "string" || !name.trim()) {
         return res.status(400).json({ status: false, message: "Please provide a valid company name" });
@@ -113,8 +97,7 @@ export const createApplication = async (req, res) => {
 export const updateApplication = async (req, res) => {
     const { id } = req.params;
     const { name, applied, status } = req.body;
-    const userId = requireUserId(req, res);
-    if (!userId) return;
+    const userId = req.userId
 
     if (!id) {
         return res.status(400).json({ status: false, message: "Id is required" });
@@ -171,8 +154,7 @@ export const updateApplication = async (req, res) => {
 
 export const deleteApplication = async (req, res) => {
     const { id } = req.params;
-    const userId = requireUserId(req, res);
-    if (!userId) return;
+    const userId = req.userId
 
     if (!id) {
         return res.status(400).json({ status: false, message: "Id not found" });

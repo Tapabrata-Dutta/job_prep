@@ -16,7 +16,6 @@ class _ApplicationPageState extends State<ApplicationPage> {
   List<ApplicationItem> _applications = [];
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _statusController = TextEditingController();
-  bool _applied = false;
 
   @override
   void initState() {

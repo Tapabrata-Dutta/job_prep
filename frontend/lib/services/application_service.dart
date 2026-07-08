@@ -3,12 +3,12 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:place_prep/models/application_model.dart';
 
-class ApplicationService {
-  static const _demoUserId = '1';
+import 'package:place_prep/services/auth_service.dart';
 
+class ApplicationService {
   static Map<String, String> get _headers => {
         'Content-Type': 'application/json',
-        'X-User-Id': _demoUserId,
+        if (AuthService.token != null) 'Authorization': 'Bearer ${AuthService.token}',
       };
 
   static String getBaseUrl() {

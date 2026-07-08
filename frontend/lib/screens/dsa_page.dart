@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:place_prep/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 
 class DsaPage extends StatefulWidget {
@@ -20,8 +21,6 @@ class _DsaPageState extends State<DsaPage> {
   bool _editSolved = false;
   int? _updatingItemId;
 
-  static const int _demoUserId = 1;
-
   String get _baseUrl {
     if (Platform.isAndroid) {
       return 'http://10.0.2.2:8000/api/dsa';
@@ -36,7 +35,7 @@ class _DsaPageState extends State<DsaPage> {
   Map<String, String> get _defaultHeaders {
     return {
       'Content-Type': 'application/json',
-      'X-User-Id': '$_demoUserId',
+      if (AuthService.token != null) 'Authorization': 'Bearer ${AuthService.token}',
     };
   }
 
@@ -139,7 +138,7 @@ class _DsaPageState extends State<DsaPage> {
   Future<void> _updateQuestion(_DsaItem item, String question, bool isSolved) async {
     try {
       final response = await http.put(
-        Uri.parse('${_baseUrlWithSlash}${item.id}'),
+        Uri.parse('$_baseUrlWithSlash${item.id}'),
         headers: _defaultHeaders,
         body: jsonEncode({'question': question, 'isSolve': isSolved}),
       ).timeout(const Duration(seconds: 8));
@@ -175,7 +174,7 @@ class _DsaPageState extends State<DsaPage> {
 
     try {
       final response = await http.put(
-        Uri.parse('${_baseUrlWithSlash}${item.id}'),
+        Uri.parse('$_baseUrlWithSlash${item.id}'),
         headers: _defaultHeaders,
         body: jsonEncode({'isSolve': nextValue}),
       ).timeout(const Duration(seconds: 8));
@@ -207,7 +206,7 @@ class _DsaPageState extends State<DsaPage> {
   Future<void> _deleteQuestion(_DsaItem item) async {
     try {
       final response = await http.delete(
-        Uri.parse('${_baseUrlWithSlash}${item.id}'),
+        Uri.parse('$_baseUrlWithSlash${item.id}'),
         headers: _defaultHeaders,
       ).timeout(const Duration(seconds: 8));
       if (!mounted) return;

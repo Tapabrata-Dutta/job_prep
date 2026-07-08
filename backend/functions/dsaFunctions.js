@@ -21,20 +21,6 @@ const normalizeQuestionRow = (row) => ({
     isSolve: normalizeBoolean(row.isSolve)
 })
 
-const parseUserId = (req) => {
-    const rawUserId = req.header("x-user-id") ?? req.query.userId ?? req.body.userId
-    const id = Number(rawUserId)
-    return Number.isInteger(id) && id > 0 ? id : null
-}
-
-const requireUserId = (req, res) => {
-    const userId = parseUserId(req)
-    if (!userId) {
-        res.status(401).json({ status: false, message: "Missing authenticated user id. Provide X-User-Id header or userId." })
-    }
-    return userId
-}
-
 const ensureSeedData = () => {
     if (memoryQuestions.length === 0) {
         memoryQuestions.push(
@@ -46,8 +32,7 @@ const ensureSeedData = () => {
 
 export const getDSA = async (req, res) => {
     const { id } = req.params
-    const userId = requireUserId(req, res)
-    if (!userId) return
+    const userId = req.userId
 
     try {
         if (!db) {
@@ -77,8 +62,7 @@ export const getDSA = async (req, res) => {
 
 export const createDSA = async (req, res) => {
     const { question, isSolve } = req.body
-    const userId = requireUserId(req, res)
-    if (!userId) return
+    const userId = req.userId
 
     if (!question || typeof question !== "string" || !question.trim()) {
         return res.status(400).json({
@@ -120,8 +104,7 @@ export const createDSA = async (req, res) => {
 export const updateDSA = async (req, res) => {
     const { id } = req.params
     const { question, isSolve } = req.body
-    const userId = requireUserId(req, res)
-    if (!userId) return
+    const userId = req.userId
 
     if (!id) {
         return res.status(400).json({ status: false, message: "Id is required" })
@@ -176,8 +159,7 @@ export const updateDSA = async (req, res) => {
 
 export const deleteQuestion = async (req, res) => {
     const { id } = req.params
-    const userId = requireUserId(req, res)
-    if (!userId) return
+    const userId = req.userId
 
     if (!id) {
         return res.status(400).json({ status: false, message: "Id not found" })
