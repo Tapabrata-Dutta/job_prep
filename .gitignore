@@ -3,3 +3,7 @@ node_modules/
 .idea/
 .vscode/
 *.log
+# macOS
+.DS_Store
+**/.DS_Store
+**/._*
