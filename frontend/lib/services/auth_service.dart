@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class AuthService {
@@ -7,12 +7,17 @@ class AuthService {
   static String? userName;
   static String? userEmail;
 
-  static String getBaseUrl() {
-    if (Platform.isAndroid) {
-      return 'http://10.0.2.2:8000/api/auth';
-    }
+static String getBaseUrl() {
+  if (kIsWeb) {
     return 'http://127.0.0.1:8000/api/auth';
   }
+
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    return 'http://10.0.2.2:8000/api/auth';
+  }
+
+  return 'http://127.0.0.1:8000/api/auth';
+}
 
   static bool get isAuthenticated => token != null;
 

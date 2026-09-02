@@ -3,6 +3,7 @@ node_modules/
 .idea/
 .vscode/
 *.log
+.dockerignore
 # macOS
 .DS_Store
 **/.DS_Store

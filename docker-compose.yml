@@ -1,0 +1,51 @@
+services:
+
+  frontend:
+    build: ./frontend
+    container_name: placement_frontend_01
+
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    
+
+  backend:
+    build: ./backend
+    container_name: placement_backend_01
+
+    ports:
+      - "8000:8000"
+
+    env_file:
+      - ./backend/.env
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+
+  mysql:
+    image: mysql:8.0
+    container_name: placement_mysql_01
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
+volumes:
+  mysql_data:

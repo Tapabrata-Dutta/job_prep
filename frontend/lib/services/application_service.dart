@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:place_prep/models/application_model.dart';
 
@@ -10,12 +10,17 @@ class ApplicationService {
         if (AuthService.token != null) 'Authorization': 'Bearer ${AuthService.token}',
       };
 
-  static String getBaseUrl() {
-    if (Platform.isAndroid) {
-      return 'http://10.0.2.2:8000/api/applications';
-    }
+static String getBaseUrl() {
+  if (kIsWeb) {
     return 'http://127.0.0.1:8000/api/applications';
   }
+
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    return 'http://10.0.2.2:8000/api/applications';
+  }
+
+  return 'http://127.0.0.1:8000/api/applications';
+}
 
   static Future<List<ApplicationItem>> fetchApplications() async {
     final response = await http.get(Uri.parse(getBaseUrl()), headers: _headers).timeout(const Duration(seconds: 8));

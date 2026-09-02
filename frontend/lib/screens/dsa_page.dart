@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:place_prep/services/auth_service.dart';
 import 'package:http/http.dart' as http;
@@ -22,10 +22,14 @@ class _DsaPageState extends State<DsaPage> {
   int? _updatingItemId;
 
   String get _baseUrl {
-    if (Platform.isAndroid) {
-      return 'http://10.0.2.2:8000/api/dsa';
-    }
+  if (kIsWeb) {
     return 'http://127.0.0.1:8000/api/dsa';
+  }
+
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    return 'http://10.0.2.2:8000/api/dsa';
+  }
+  return 'http://127.0.0.1:8000/api/dsa';
   }
 
   String get _baseUrlWithSlash {
