@@ -12,14 +12,14 @@ class ApplicationService {
 
 static String getBaseUrl() {
   if (kIsWeb) {
-    return 'http://127.0.0.1:8000/api/applications';
+    return 'http://16.192.27.45:8000/api/applications';
   }
 
   if (defaultTargetPlatform == TargetPlatform.android) {
     return 'http://10.0.2.2:8000/api/applications';
   }
 
-  return 'http://127.0.0.1:8000/api/applications';
+  return 'http://16.192.27.45:8000/api/applications';
 }
 
   static Future<List<ApplicationItem>> fetchApplications() async {

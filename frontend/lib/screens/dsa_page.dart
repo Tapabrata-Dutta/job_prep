@@ -23,13 +23,13 @@ class _DsaPageState extends State<DsaPage> {
 
   String get _baseUrl {
   if (kIsWeb) {
-    return 'http://127.0.0.1:8000/api/dsa';
+    return 'http://16.192.27.45:8000/api/dsa';
   }
 
   if (defaultTargetPlatform == TargetPlatform.android) {
     return 'http://10.0.2.2:8000/api/dsa';
   }
-  return 'http://127.0.0.1:8000/api/dsa';
+  return 'http://16.192.27.45:8000/api/dsa';
   }
 
   String get _baseUrlWithSlash {
